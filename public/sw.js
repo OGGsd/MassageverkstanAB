@@ -4,19 +4,8 @@
 const CACHE_NAME = 'massageverkstan-pwa-v2.1.0';
 const OFFLINE_URL = '/offline.html';
 
-// Enhanced caching strategy for maximum PWA score
-const STATIC_CACHE_URLS = [
-  '/',
-  '/index.html',
-  '/offline.html',
-  '/manifest.json',
-  '/logo.png',
-  '/staff/Ingmar.png',
-  '/staff/Tobias.png',
-  '/favicon-192x192.png',
-  '/favicon-512x512.png',
-  '/android-icon-192x192.png'
-];
+// Workbox manifest injection point - required for vite-plugin-pwa
+const STATIC_CACHE_URLS = self.__WB_MANIFEST;
 
 // Install event - aggressive caching for performance
 self.addEventListener('install', (event) => {
@@ -29,7 +18,7 @@ self.addEventListener('install', (event) => {
         console.log('[SW] Caching app shell and critical resources...');
         
         // Cache static resources
-        await cache.addAll(STATIC_CACHE_URLS);
+        await cache.addAll(self.__WB_MANIFEST);
         
         // Force immediate activation
         await self.skipWaiting();
